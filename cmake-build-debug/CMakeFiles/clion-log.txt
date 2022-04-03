@@ -1,0 +1,9 @@
+/snap/clion/184/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/snap/clion/184/bin/ninja/linux/ninja -DWITH_TESTS=ON -G Ninja /home/ivan/Documents/SLAE4SEM
+TESTING: ON
+TEST_FILE: test_csr_matrix
+TEST_FILE: test_power_method_csr
+TEST_FILE: test_power_method_dense
+TEST_FILE: test_qr
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/ivan/Documents/SLAE4SEM/cmake-build-debug
