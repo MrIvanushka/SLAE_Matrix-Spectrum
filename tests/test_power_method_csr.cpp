@@ -10,12 +10,14 @@
 TEST(TEST_POWER_METHOD, NODISCARD){
     //std::set<Triplet<double>> data{{0, 0, 1}, {2, 1, 5}};
     //CSR<double> matrix(3, 3, data);
-    std::vector<double> a {1, 2, 3, 4};
-    std::vector<double> b {1, 2, 3, 4 };
+    std::vector<double> a {1.0, 2.0, 3.0, 5.0};
+    std::vector<double> b {1.0, 2.0, 3.0, 5.0};
     std::cout << "-------------------CSR-----------------------";
-    CSR<double> matrix =  matrixProduct(a, b);
-    std::cout << std::endl << "Matrix" << std::endl << matrix << std::endl;
-    auto result = PowerIterations::scoreLambda(matrix, a, 1.0);
-    std::cout << "Max lambda:" << result;
+    CSR<double> matrix_ =  matrixProduct(a, b);
+    std::cout << std::endl << "Matrix" << std::endl << matrix_ << std::endl;
+    auto result = PowerIterations::scoreLambda(matrix_, a, 0.0001);
+    std::cout << "Max lambda:" << result << '\n';
+    auto result2 = PowerIterations::scoreSelfVector(matrix_, a, 0.0001);
+    std::cout << "Self Vector:" << result2;
 }
 

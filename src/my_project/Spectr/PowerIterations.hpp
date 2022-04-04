@@ -3,6 +3,9 @@
 //
 
 #include<vector>
+#include <random>
+#include <algorithm>
+#include <iterator>
 #include "my_project/utility/Norm.hpp"
 #include "my_project/sparse/CSR.hpp"
 #include "my_project/dense/densematrix.hpp"
@@ -20,7 +23,8 @@ public:
         {
             auto pair = scoreAll(A, startVector, tolerance);
             lambdas.push_back(pair.first);
-            A -= pair.first * DenseMatrix(pair.second.size(), 1, pair.second) * DenseMatrix(1, pair.second.size(), pair.second);
+            A -= pair.first * DenseMatrix(pair.second.size(), 1, pair.second) *
+                    DenseMatrix(1, pair.second.size(), pair.second);
         }
 
         return lambdas;
@@ -31,8 +35,9 @@ public:
                          const T &tolerance) {
         return scoreAll(A, scoreVector, tolerance).first;
     }
+
     template<typename T>
-    static T scoreSelfVector(const CSR<T> &A, const std::vector<T> scoreVector,
+    static std::vector<T> scoreSelfVector(const CSR<T> &A, const std::vector<T> scoreVector,
                          const T &tolerance) {
         return scoreAll(A, scoreVector, tolerance).second;
     }
@@ -42,12 +47,13 @@ private:
     static std::pair<T, std::vector<T>> scoreAll(const DenseMatrix<T> &A, std::vector<T> scoreVector,
                                                  const T &tolerance) {
         std::vector<T> temp;
+
         T lambda = static_cast<T>(0);
         do {
             temp = A * scoreVector;
-            scoreVector = temp * (static_cast<T>(1) / norm(temp, NormType::FirstNorm));
+            scoreVector = temp * (static_cast<T>(1) / norm(temp, NormType::ThirdNorm));
             lambda = scoreVector * (A * scoreVector) / (scoreVector * scoreVector);
-        } while (norm(A * scoreVector - lambda * scoreVector, NormType::FirstNorm) > tolerance);
+        } while (norm(A * scoreVector - lambda * scoreVector, NormType::ThirdNorm) > tolerance);
 
         return std::pair(lambda, scoreVector);
     }
@@ -59,9 +65,9 @@ private:
         T lambda = static_cast<T>(0);
         do {
             temp = A * scoreVector;
-            scoreVector = temp * (static_cast<T>(1) / norm(temp, NormType::FirstNorm));
+            scoreVector = temp * (static_cast<T>(1) / norm(temp, NormType::ThirdNorm));
             lambda = scoreVector * (A * scoreVector) / (scoreVector * scoreVector);
-        } while (norm(A * scoreVector - lambda * scoreVector, NormType::FirstNorm) > tolerance);
+        } while (norm(A * scoreVector - lambda * scoreVector, NormType::ThirdNorm) > tolerance);
 
         return std::pair(lambda, scoreVector);
     }
